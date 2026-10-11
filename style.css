@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap');
+
+:root {
+    --bg-main: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-dark: #1a1a1a;
+    --text-light: #6c757d;
+    --primary: #064e3b; /* Emerald escuro */
+    --gold: #d4af37; /* Champanhe/Ouro */
+    --danger: #dc3545;
+    --success: #198754;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+body { background-color: var(--bg-main); color: var(--text-dark); display: flex; height: 100vh; overflow: hidden; }
+
+/* Layout Geral */
+.app-container { display: flex; width: 100%; }
+.sidebar { width: 280px; background-color: var(--primary); color: white; padding: 30px 20px; display: flex; flex-direction: column; }
+.content { flex: 1; padding: 40px; overflow-y: auto; background-color: var(--bg-main); }
+
+/* Sidebar */
+.logo { font-size: 24px; font-weight: 300; margin-bottom: 50px; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+.logo span { font-weight: 700; color: var(--gold); }
+.nav-btn { background: transparent; color: rgba(255,255,255,0.7); border: none; text-align: left; padding: 15px; width: 100%; font-size: 15px; cursor: pointer; transition: 0.3s; margin-bottom: 5px; border-radius: 8px; }
+.nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-btn.ativo { background: var(--gold); color: var(--primary); font-weight: 700; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+
+/* Abas e Cards */
+.aba { display: none; }
+.aba.ativa { display: block; }
+h2 { font-weight: 300; font-size: 28px; margin-bottom: 30px; color: var(--primary); }
+h3 { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
+.card { background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.02); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.grid-2-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+/* Formulários */
+.form-group { display: flex; flex-direction: column; gap: 15px; }
+input, textarea { padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.3s; background: #fcfcfc; }
+input:focus, textarea:focus { border-color: var(--gold); }
+.dieta-input { width: 100%; height: 80px; resize: vertical; margin-bottom: 20px; }
+
+/* Botões */
+.btn-primary { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+.btn-primary:hover { background: #022c22; }
+.btn-secondary { background: #e2e8f0; color: var(--text-dark); border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+.btn-gold { background: var(--gold); color: white; border: none; padding: 15px 30px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 16px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); }
+.btn-gold:hover { background: #b5952f; transform: translateY(-2px); }
+
+.mt-10 { margin-top: 10px; } .mt-20 { margin-top: 20px; } .mb-20 { margin-bottom: 20px; }
+
+/* Utilitários e Relatório */
+.escondido { display: none !important; }
+.fade-in { animation: fadeIn 0.4s ease-in; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.chart-container { position: relative; height: 250px; width: 100%; }
+
+.ocr-upload { text-align: center; border: 2px dashed #e2e8f0; }
+.ocr-icon { font-size: 40px; margin-bottom: 10px; }
+.destaque-gold { background: linear-gradient(135deg, #fffcf5 0%, #fff 100%); border-left: 4px solid var(--gold); }
+
+.marcadores-list li { padding: 10px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+.alerta-red { color: var(--danger); font-weight: bold; }
+.alerta-green { color: var(--success); font-weight: bold; }
+
+.sugestoes-list li { margin-bottom: 10px; padding-left: 20px; position: relative; font-size: 14px; line-height: 1.5; }
+.sugestoes-list li::before { content: '✨'; position: absolute; left: 0; top: 0; }
+
+/* Formatação do PDF */
+#documento-final { padding: 40px; font-family: 'Times New Roman', serif; color: #000; }
+.doc-header { text-align: center; border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 20px; }
+.doc-header h2 { margin-bottom: 5px; letter-spacing: 2px; }
