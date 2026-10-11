@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumière - Nutrição Clínica</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Bibliotecas de Gráficos e PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Menu Lateral -->
+        <aside class="sidebar">
+            <div class="logo">Lumière<span>Clinic</span></div>
+            <nav>
+                <button class="nav-btn ativo" onclick="mudarAba('aba-paciente', this)">1. Paciente & Medidas</button>
+                <button class="nav-btn" onclick="mudarAba('aba-exames', this)">2. Exames (Smart OCR)</button>
+                <button class="nav-btn" onclick="mudarAba('aba-dieta', this)">3. Dieta Modular</button>
+                <button class="nav-btn" onclick="mudarAba('aba-relatorio', this)">4. Emissão de Relatório</button>
+            </nav>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="content">
+            
+            <!-- ABA 1: PACIENTE E MEDIDAS -->
+            <section id="aba-paciente" class="aba ativa fade-in">
+                <h2>Dados e Evolução Clínica</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Ficha do Paciente</h3>
+                        <div class="form-group">
+                            <input type="text" id="nome-paciente" placeholder="Nome Completo do Paciente">
+                            <div class="grid-2-inner">
+                                <input type="number" id="peso-atual" placeholder="Peso Atual (kg)">
+                                <input type="number" id="peso-meta" placeholder="Meta de Peso (kg)">
+                            </div>
+                            <div class="grid-2-inner">
+                                <input type="number" id="bf-atual" placeholder="% Gordura Atual">
+                                <input type="number" id="bf-meta" placeholder="% Gordura Meta">
+                            </div>
+                            <button class="btn-primary" onclick="salvarMedida()">Registar Medição de Hoje</button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>Curva de Evolução (Histórico)</h3>
+                        <div class="chart-container">
+                            <canvas id="graficoEvolucao"></canvas>
+                        </div>
+                        <button class="btn-secondary mt-10" onclick="limparHistorico()">Limpar Histórico deste Paciente</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABA 2: EXAMES E OCR -->
+            <section id="aba-exames" class="aba fade-in">
+                <h2>Inteligência Clínica & Exames</h2>
+                <div class="card ocr-upload">
+                    <div class="ocr-icon">📄</div>
+                    <h3>Leitura Automática de Exames (OCR)</h3>
+                    <p>Faça o upload do PDF do laboratório. O sistema fará o cruzamento com as diretrizes clínicas.</p>
+                    <button id="btn-ocr" class="btn-primary" onclick="simularOCR()">Simular Leitura OCR Agora</button>
+                </div>
+
+                <div id="resultado-exames" class="escondido mt-20">
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3>Marcadores Encontrados</h3>
+                            <ul id="lista-marcadores" class="marcadores-list"></ul>
+                        </div>
+                        <div class="card destaque-gold">
+                            <h3>🤖 Sugestões do Acelerador</h3>
+                            <ul id="lista-sugestoes" class="sugestoes-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABA 3: DIETA MODULAR -->
+            <section id="aba-dieta" class="aba fade-in">
+                <h2>Construção Modular da Dieta</h2>
+                <div class="card">
+                    <div class="modulo-refeicao">
+                        <h3>Pequeno-Almoço (Desjejum)</h3>
+                        <textarea class="dieta-input" id="dieta-cafe" placeholder="Ex: 2 Ovos mexidos, 1 fatia de pão integral, café sem açúcar..."></textarea>
+                    </div>
+                    <div class="modulo-refeicao">
+                        <h3>Almoço</h3>
+                        <textarea class="dieta-input" id="dieta-almoco" placeholder="Ex: 150g frango, 100g arroz, salada verde à vontade..."></textarea>
+                    </div>
+                    <div class="modulo-refeicao">
+                        <h3>Lanche / Pré-Treino</h3>
+                        <textarea class="dieta-input" id="dieta-lanche" placeholder="Ex: 1 iogurte proteico, 30g de aveia..."></textarea>
+                    </div>
+                    <div class="modulo-refeicao">
+                        <h3>Jantar</h3>
+                        <textarea class="dieta-input" id="dieta-jantar" placeholder="Ex: 150g peixe branco, legumes no vapor..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABA 4: RELATÓRIO PDF -->
+            <section id="aba-relatorio" class="aba fade-in">
+                <h2>Revisão e Emissão</h2>
+                <button class="btn-gold mb-20" onclick="gerarPDF()">📄 Exportar Relatório em PDF</button>
+                
+                <div class="card" id="documento-final">
+                    <div class="doc-header">
+                        <h2>Lumière Clinic</h2>
+                        <p>Plano de Intervenção Nutricional e Metabólica</p>
+                    </div>
+                    
+                    <div class="doc-body">
+                        <p><strong>Paciente:</strong> <span id="out-nome">---</span></p>
+                        
+                        <h4 class="mt-20">📈 Evolução de Metas</h4>
+                        <p>Peso Atual: <span id="out-peso">---</span> | Meta: <span id="out-pesometa">---</span></p>
+                        <p>Gordura Atual: <span id="out-bf">---</span> | Meta: <span id="out-bfmeta">---</span></p>
+
+                        <h4 class="mt-20">🍽️ Estratégia Nutricional</h4>
+                        <div id="out-dieta"></div>
+
+                        <h4 class="mt-20">🧠 Prescrição de Rotina e Estilo de Vida</h4>
+                        <ul id="out-rotina"></ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
